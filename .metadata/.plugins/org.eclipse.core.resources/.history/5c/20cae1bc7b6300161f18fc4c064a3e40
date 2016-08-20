@@ -1,0 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@page import org.w3c.dom.*, javax.xml.parsers.* %>
+    
+    
+<html>
+<head>
+  <title>XML PARSOR</title>
+</head>
+<body>
+	<%
+	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+	
+	%>
+</body>
+</html>

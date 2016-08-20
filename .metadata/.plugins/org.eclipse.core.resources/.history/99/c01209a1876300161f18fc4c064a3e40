@@ -1,0 +1,60 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%@ page import="java.io.*,java.util.*" %>
+<%@ page import="org.w3c.dom.*" %>
+<%@ page import="javax.xml.parsers.*"%>	   
+    
+<html>
+<head>
+  <title>XML PARSOR</title>
+</head>
+<body>
+	<%!
+	Document doc;
+	String getXMLValue(String name1){
+		NodeList nlist=doc.getElementsByTagName(name1);
+		String value = "foo";
+		//String value = nlist.item(0).getFirstChild().getNodeValue();
+		return value;
+	}
+	%>
+	
+	<%!
+	private void traverseTree(Node node, 
+		JspWriter out) throws Exception{
+		
+	}
+	%>
+
+
+
+	<%
+	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+	DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+	
+	System.out.println("This does not get printed on webpage.");
+	out.println("<table border=2>");
+	out.println("<tr><th>date</th></tr>");
+	out.println();
+	
+	if(request.getParameter("city")!=null){
+		if(request.getParameter("city").equals("aaa")){
+			doc = docBuilder.parse("http://58.213.107.34/solr/collection1/select?q=*%3A*&start=1&rows=2&wt=xml&indent=true");
+		}
+	}
+	
+	doc = docBuilder.parse("http://58.213.107.34/solr/collection1/select?q=*%3A*&start=1&rows=2&wt=xml&indent=true");
+	out.println("<p>doc = ...parse executed<p>");
+	
+	NodeList nlist=doc.getElementsByTagName("responseHeader");
+	out.println("<p>doc.getElementsByTagaName succeeded<p>");
+
+	String value = "foo";
+	//String value = nlist.item(0).getFirstChild().getNodeValue();
+ 	nlist.item(0).getNodeValue();
+	out.println("<p>nlist.item(0).getNodeValue(); succeeded<p>");
+
+	%>
+</body>
+</html>

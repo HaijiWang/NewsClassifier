@@ -1,0 +1,109 @@
+package com.yanjiuyanjiu.text.classification;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.BinaryRequestWriter;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.XMLResponseParser;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+
+public class SampleCrawler {
+	
+	public static final String SOLR_URL = "http://58.213.107.34/solr/";
+	
+	public SampleCrawler(){
+	}
+
+	
+	private static QueryResponse getContent (
+		String queryString, 
+		int start_row, int rows, boolean randomQuery) 
+		throws SolrServerException, IOException{
+		
+		HttpSolrServer server = new HttpSolrServer(SOLR_URL);
+		
+		// optional settings: 
+		server.setMaxRetries(1);
+		server.setMaxRetries(1); // defaults to 0. > 1 not recommended.
+		server.setConnectionTimeout(5000); // 5 seconds to establish TCP
+		server.setParser(new XMLResponseParser());
+		server.setSoTimeout(1000); // socket read timeout
+		server.setDefaultMaxConnectionsPerHost(100);
+		server.setMaxTotalConnections(100);
+		server.setFollowRedirects(false); // defaults to false
+		
+
+		SolrQuery query = new SolrQuery();
+		query.setQuery(queryString);
+		query.setFields("");
+		//query.setFields("id","content");
+		//query.setSort("price", ORDER.asc);
+		query.setStart(start_row);
+		query.setRows(rows);
+		//query.set("wt","xml");
+		//query.setRequestHandler("/select");
+		QueryResponse my_response = server.query( query );
+		
+		System.out.println("Successful! Found:" + my_response.getResults().getNumFound() + "rows.");
+		return my_response;
+	}
+
+	public static void main(String args[]) {
+		
+			QueryResponse solr_response = null;
+			try{
+				String queryString = "content:ҽ";
+				int start_row = 0; 
+				int rows = 1; 
+				boolean randomQuery = false;
+				solr_response = getContent(queryString,start_row,rows,randomQuery);
+			} catch(Exception e){
+				System.out.println("Error: SampleCrawler getContent()");
+				System.out.println(e);
+			}
+		
+			BufferedWriter writer = null;
+			try{
+				
+				File dest_path = new File("./data/Sample3_solr/");
+				String dest_fileName = "test.txt";
+						
+				if(dest_path.exists() && dest_path.isDirectory()){
+					File dest_file = new File(dest_path,dest_fileName);
+					
+					System.out.println("writing file " + dest_fileName + "to local");
+					writer = new BufferedWriter(new FileWriter(dest_file));
+				
+					int iRow = 1;
+					for (SolrDocument doc : solr_response.getResults()) {
+						System.out.println("----------" + iRow + "------------");
+						System.out.println("id: " + doc.getFieldValue("id").toString());
+						System.out.println("content: " + doc.getFieldValue("content").toString());
+						System.out.println(doc.getFieldNames());
+
+						writer.write(doc.getFieldValue("content").toString());
+						System.out.println("write file finished");
+						iRow++;
+					}
+				}
+				else{
+					System.out.println("destination path does not exist.");
+				}
+			} catch(Exception e){
+				System.out.println(e);
+			} finally{
+				try{writer.close();} catch(Exception e){
+					System.out.println(e);}
+			}
+		
+	}
+	
+}

@@ -1,0 +1,81 @@
+<%@ page language="java" 
+	contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<%@ page import="java.io.IOException"
+		import="org.apache.solr.client.solrj.SolrQuery"
+		import="org.apache.solr.client.solrj.SolrQuery.ORDER"
+		import="org.apache.solr.client.solrj.SolrServerException"
+		import="org.apache.solr.client.solrj.impl.BinaryRequestWriter"
+		import="org.apache.solr.client.solrj.impl.HttpSolrServer"
+		import="org.apache.solr.client.solrj.impl.XMLResponseParser"
+		import="org.apache.solr.client.solrj.response.QueryResponse"
+		import="org.apache.solr.common.SolrDocument" %>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<%!
+	private static final String SOLR_URL = "http://58.213.107.34/solr/";
+	%>
+	<%!
+	private static QueryResponse getContent() throws SolrServerException, IOException{
+		HttpSolrServer server = new HttpSolrServer(SOLR_URL);
+		server.setMaxRetries(1);
+		server.setMaxRetries(1); // defaults to 0. > 1 not recommended.
+		server.setConnectionTimeout(5000); // 5 seconds to establish TCP
+		server.setParser(new XMLResponseParser());
+		server.setSoTimeout(1000); // socket read timeout
+		server.setDefaultMaxConnectionsPerHost(100);
+		server.setMaxTotalConnections(100);
+		server.setFollowRedirects(false); // defaults to false
+		
+		// allowCompression defaults to false.
+		// Server side must support gzip or deflate for this to have any effect.
+		server.setAllowCompression(true);
+
+		//server.setRequestWriter(new BinaryRequestWriter());
+		SolrQuery query = new SolrQuery();
+		query.setQuery("content:医");
+		query.setFields("id","content");
+		//query.setSort("price", ORDER.asc);
+		query.setStart(0);
+		query.setRows(2);
+		//query.set("wt","xml");
+		//query.setRequestHandler("/select");
+		QueryResponse response = server.query( query );
+		
+		// Get results
+		System.out.println("Find:" + response.getResults().getNumFound());
+		
+		return response;
+	}
+	%>
+	
+		
+		
+	<%
+		int iRow = 1;
+		for (SolrDocument doc : response.getResults()) {
+			System.out.println("----------" + iRow + "------------");
+			System.out.println("id: " + doc.getFieldValue("id").toString());
+			System.out.println("content: " + doc.getFieldValue("content").toString());
+
+			iRow++;
+		}
+	%>
+		
+		
+	
+	
+
+
+
+  
+</body>
+</html>
