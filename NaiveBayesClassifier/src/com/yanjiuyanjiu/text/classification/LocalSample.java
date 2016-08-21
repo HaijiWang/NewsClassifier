@@ -85,6 +85,7 @@ public class LocalSample {
 					System.out.println("Writing file " + dest_fileName + "to local...");
 					try {
 						osw = new OutputStreamWriter(new FileOutputStream(dest_file),"UTF-8");
+						osw.write(doc.getFieldValue("id").toString());
 						osw.write(doc.getFieldValue("content").toString());
 					} catch (Exception e) {
 						System.out.println("Error: writer to " + dest_file + "failed.");
