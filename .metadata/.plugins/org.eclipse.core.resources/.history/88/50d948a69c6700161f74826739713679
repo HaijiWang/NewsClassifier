@@ -1,0 +1,50 @@
+package com.yanjiuyanjiu.text.classification;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.*;
+import java.util.*;
+
+import org.apache.solr.client.solrj.SolrServer.*;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.BinaryRequestWriter;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.XMLResponseParser;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.*;
+
+public class MyTest3_addSolr {
+	public static final String SOLR_URL = "http://172.168.63.233:8983/solr";
+
+	public static void main(String[] args) {
+		//通过浏览器查看结果
+		//http://172.168.63.233:8983/solr/collection1/select?q=name%3A%E6%94%B9%E9%9D%A9&wt=json&indent=true
+		AddDocs();
+		//delDocs();
+	}
+
+	public static void AddDocs() {
+		String[] words = { "公信力", "影响力的新型媒体集团" };
+		Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+		for (int i = 4; i < 10; i++) {
+			SolrInputDocument doc1 = new SolrInputDocument();
+			doc1.addField("id", "id" + i, 1.0f);
+			doc1.addField("name", words[i % 21], 1.0f);
+			doc1.addField("price", 10 * i);
+			docs.add(doc1);
+		}
+		try {
+			HttpSolrServer server = new HttpSolrServer(SOLR_URL);
+			
+			server.add(docs.iterator());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		System.out.println("tFInished adding:");
+	}
+}
