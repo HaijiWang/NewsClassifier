@@ -16,10 +16,11 @@ import org.apache.solr.client.solrj.impl.BinaryRequestWriter;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.*;
 
 public class MyTest3_addSolr {
-	public static final String SOLR_URL = "http://172.168.63.233:8983/solr";
+	public static final String SOLR_URL = "http://localhost:8983/solr/Test1";
 
 	public static void main(String[] args) {
 		//通过浏览器查看结果
@@ -29,22 +30,36 @@ public class MyTest3_addSolr {
 	}
 
 	public static void AddDocs() {
-		String[] words = { "公信力", "影响力的新型媒体集团" };
-		Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
-		for (int i = 4; i < 10; i++) {
+		
+		
 			SolrInputDocument doc1 = new SolrInputDocument();
-			doc1.addField("id", "id" + i, 1.0f);
-			doc1.addField("name", "ddd");
-			doc1.addField("price", 10 * i);
-			docs.add(doc1);
-		}
+			doc1.addField("bb", "7");
+			//Map<String,String> fieldModifier = new HashMap<String,String>();
+			//fieldModifier.put("set","GeorgeWBush"); 
+			//doc1.addField("title",fieldModifier);
+			doc1.addField("title","titleChanged");
+			System.out.println("Debug:\nDoc_in: " + doc1.toString());
+			
+			
+			
 		try {
 			HttpSolrServer server = new HttpSolrServer(SOLR_URL);
+			server.setMaxRetries(1);
+			server.setMaxRetries(1); // defaults to 0. > 1 not recommended.
+			server.setConnectionTimeout(5000); // 5 seconds to establish TCP
+			server.setParser(new XMLResponseParser());
+			server.setSoTimeout(1000); // socket read timeout
+			server.setDefaultMaxConnectionsPerHost(100);
+			server.setMaxTotalConnections(100);
+			server.setFollowRedirects(false); // defaults to false
 			
-			server.add(docs.iterator());
+			UpdateResponse update_response = server.add(doc1);
+			//server.add(doc1);
+			server.commit();
+			System.out.println(update_response.toString());
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		System.out.println("tFInished adding:");
+		System.out.println("FInished adding:");
 	}
 }

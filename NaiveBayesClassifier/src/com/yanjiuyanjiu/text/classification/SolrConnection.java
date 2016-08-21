@@ -16,6 +16,7 @@ import org.apache.solr.client.solrj.impl.BinaryRequestWriter;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.*;
 
 public class SolrConnection {
@@ -99,10 +100,11 @@ public class SolrConnection {
 		
 		
 		//System.out.println("Debug.");
-		System.out.println("Doc_in: " + doc_in.toString());
+		System.out.println("Debug: Doc_in: " + doc_in.toString());
 		System.out.println("updating content...");
-		server.add(doc_in);
+		UpdateResponse UD_response = server.add(doc_in);
 		server.commit();
+		System.out.println("Debug: "+UD_response.toString());
 		System.out.println("Finished updating solr.");
 
 	}
@@ -124,31 +126,35 @@ public class SolrConnection {
 		return my_response;
 	}
 	
-	public static void main(String args[]){
+	//======================================================================================
+	//========================= Main =======================================================
+	
+	public static void main_delete(String args[]){
+	//public static void main(String args[]){
 		SolrConnection tmp_conn = new SolrConnection();
-		
-		tmp_conn.setParams("q", "id:3");
-		
+		List<String> ids = new ArrayList<String>();
+		//ids.add("3");
+		//ids.add("8");
+		//ids.add("7");
+		ids.add("1677c8a1-8374-4c8a-9fe8-f3ad665b0b4a");
+		tmp_conn.deleteContentById(ids);
+	}
+
+	public static void main_add(String args[]){
+		SolrConnection tmp_conn = new SolrConnection();
+		tmp_conn.setSolrURL("http://localhost:8983/solr/Test1");
 		
 		HashMap<String,Object> update_param = new HashMap<String,Object>();
-		update_param.put("id","1");
-		//update_param.put("title","title2");
-		Map<String,String> fieldModifier = new HashMap<String,String>();
-		fieldModifier.put("set","title 2"); 
-		update_param.put("title",fieldModifier);
-		
-		
-		tmp_conn.setSolrURL("http://localhost:8983/");
+		update_param.put("id","6");
+		update_param.put("title","title2");
 		try{
-			System.out.println("Debug1");
 			tmp_conn.updateContent(update_param);
-			System.out.println("Debug");
 		} catch(Exception e){
 			System.out.println(e);
 		}
 	}
 
-	public static void main_tmp(String args[]) {
+	public static void main(String args[]) {
 
 		QueryResponse solr_response = null;
 
@@ -165,14 +171,24 @@ public class SolrConnection {
 		for (SolrDocument doc : solr_response.getResults()){
 			System.out.println("Got id" + doc.getFieldValue("id").toString());
 			System.out.println("Got content: " + doc.getFieldValue("content").toString());
+			
 			HashMap<String,Object> update_param = new HashMap<String,Object>();
-			//update_param = doc.getFieldValueMap();
-			update_param.put("id","2");
-			update_param.put("title","title2");
-			tmp_conn.setSolrURL("http://localhost:8983/");
+			
+			Iterator<String> itr = doc.getFieldNames().iterator();
+			while (itr.hasNext()) {
+				String key = itr.next();
+				if (key!="_version_"){
+						update_param.put(key, doc.getFieldValue(key));
+				}
+				itr.remove(); // avoids a ConcurrentModificationException
+			}
+			System.out.println("Debug!!!!!");
+			//update_param.put("id","2");
+			//update_param.put("title","title2");
+			tmp_conn.setSolrURL("http://localhost:8983/solr/Test1");
 			try{
 				System.out.println("Debug");
-				//tmp_conn.updateContent(update_param);
+				tmp_conn.updateContent(update_param);
 			} catch(Exception e){
 				System.out.println(e);
 			}
