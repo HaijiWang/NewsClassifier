@@ -11,4 +11,6 @@
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="java.util.Map.Entry"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="org.apache.solr.client.solrj.response.UpdateResponse"/>
+<fullyQualifiedTypeName name="org.apache.lucene.queryParser.QueryParser"/>
 </qualifiedTypeNameHistroy>

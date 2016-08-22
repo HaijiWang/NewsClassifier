@@ -1,140 +1,150 @@
-<%@ page language="java" 
-	contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-<%@ page import="java.io.IOException"
-		import="java.util.*"
-		import="org.apache.solr.client.solrj.SolrQuery"
-		import="org.apache.solr.client.solrj.SolrQuery.ORDER"
-		import="org.apache.solr.client.solrj.SolrServerException"
-		import="org.apache.solr.client.solrj.impl.BinaryRequestWriter"
-		import="org.apache.solr.client.solrj.impl.HttpSolrServer"
-		import="org.apache.solr.client.solrj.impl.XMLResponseParser"
-		import="org.apache.solr.client.solrj.response.QueryResponse"
-		import="org.apache.solr.common.SolrDocument" 
-		import="solr_classification.com.SolrConnection" %>
+<%@ page import="java.io.IOException" import="java.util.*"
+	import="org.apache.solr.client.solrj.SolrQuery"
+	import="org.apache.solr.client.solrj.SolrQuery.ORDER"
+	import="org.apache.solr.client.solrj.SolrServerException"
+	import="org.apache.solr.client.solrj.impl.BinaryRequestWriter"
+	import="org.apache.solr.client.solrj.impl.HttpSolrServer"
+	import="org.apache.solr.client.solrj.impl.XMLResponseParser"
+	import="org.apache.solr.client.solrj.response.QueryResponse"
+	import="org.apache.solr.common.SolrDocument"
+	import="solr_classification.com.SolrConnection"
+	import="org.apache.lucene.queryParser.QueryParser"
+%>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>News Classifier</title>
 </head>
 <body>
-	<%!private static String versionId = null; %>
+	<%!private static String id = null; 
+	   private static SolrConnection sConn= new SolrConnection();
+	   
+	%>
+	<%
+
+	sConn.resetQueryParams();
+	
+	%>
+	
+	
 	
 	<%
-	out.print(request.getQueryString());
-	%>
 	
-	<%!
-	//private static final String SOLR_URL = "http://58.213.107.34/solr/";
-	%>
-	<%!/*
-	private static QueryResponse getContent(String solrUrl) throws SolrServerException, IOException{
-		HttpSolrServer server = new HttpSolrServer(solrUrl);
-		
-		// optional settings: 
-		server.setMaxRetries(1);
-		server.setMaxRetries(1); // defaults to 0. > 1 not recommended.
-		server.setConnectionTimeout(5000); // 5 seconds to establish TCP
-		server.setParser(new XMLResponseParser());
-		server.setSoTimeout(1000); // socket read timeout
-		server.setDefaultMaxConnectionsPerHost(100);
-		server.setMaxTotalConnections(100);
-		server.setFollowRedirects(false); // defaults to false
-		
-		// allowCompression defaults to false.
-		// Server side must support gzip or deflate for this to have any effect.
-		server.setAllowCompression(true);
-
-		//server.setRequestWriter(new BinaryRequestWriter());
-		SolrQuery query = new SolrQuery();
-		query.setQuery("content:医");
-		query.setFields("id","content");
-		//query.setSort("price", ORDER.asc);
-		query.setStart(0);
-		query.setRows(1);
-		//query.set("wt","xml");
-		//query.setRequestHandler("/select");
-		QueryResponse my_response = server.query( query );
-		
-		// Get results
-		System.out.println("Found:" + my_response.getResults().getNumFound());
-		
-		return my_response;
+	// Find classification name and set ArtificialTags
+	ArrayList<String> classes = sConn.getClasses();
+	Enumeration<String> class_names = request.getParameterNames();
+	String oneClass = null;
+	while (class_names.hasMoreElements()){
+		oneClass = class_names.nextElement();
+		if(classes.contains(oneClass) && request.getParameter(oneClass).equals("on")){
+			System.out.println("Tag as:"+oneClass);
+			break;
+		};
 	}
+	out.println(request.getQueryString()+"\n");
+	
+	// Test Delete
+	List<String> ids = new ArrayList<String>();
+	ids.add(QueryParser.escape(request.getParameter("id")));
+	sConn.deleteContentById(ids);
+	
+	
+	// Update ArtificialTags
+	System.out.println("Debug: Going to update id:"+QueryParser.escape(request.getParameter("id")));
+	Map<String, Object> update_params = new HashMap<String, Object>();
+	Map<String,String> fieldModifier = new HashMap<String,String>();
+	fieldModifier.put("set",oneClass); 
+	update_params.put("artificialTags",fieldModifier);
+	update_params.put("id",QueryParser.escape(request.getParameter("id")));
+	
+	//sConn.updateContent(update_params);
+	
+	/*
+	// Verify the previous update is successful
+	sConn.resetQueryParams();
+	sConn.setQueryParams("q", "id:" + QueryParser.escape(request.getParameter("id")));
+	sConn.setQueryParams("start", "0");
+	sConn.setQueryParams("rows", "1");	
+	
+	try {
+		//solr_response_1 = sConn.getContent();	
+	} catch(Exception e){
+		System.out.println(e);
+	}
+	SolrDocument doc_1 = solr_response_1.getResults().get(0);
+	id = doc_1.getFieldValue("id").toString();
+	System.out.println("Again got : id" + id);
+	System.out.println("ArtificialTags: " + doc_1.getFieldValue("artificialTags").toString());
 	*/
 	%>
-	
-		
-		
+
 	<%
-		try {
-			HashMap<String, String> query_params = new HashMap<String, String>();
-			query_params.put("q",
-					"content:急诊 AND content:门诊 AND content:住院 AND content: 质量 AND content:服务 AND content:整形");
-			query_params.put("fq", null);
-			query_params.put("fl", "id,_version_,content,machineTags,artificialTags");
-			query_params.put("start", "0");
-			query_params.put("rows", "1");
-			query_params.put("sort", null);
-			query_params.put("hl", null);
-			query_params.put("facet", null);
-			
+	
+		QueryResponse solr_response = new QueryResponse();
 		
-			SolrConnection sConn= new SolrConnection(); 
-			QueryResponse solr_response = sConn.getContent(query_params);
-			int iRow = 1;
-			for (SolrDocument doc : solr_response.getResults()) {
-				System.out.println("----------" + iRow + "------------");
-				System.out.println("version: " + doc.getFieldValue("_version_").toString());
-				System.out.println("content: " + doc.getFieldValue("content").toString());
-				
-				
-				versionId = doc.getFieldValue("_version_").toString();
-				
-				out.println("<table border=2>");
-				out.println("<tr><th>");
-				out.println("version: " + doc.getFieldValue("_version_").toString());
-				out.println("</th><th>");
-				out.println("content: " + doc.getFieldValue("content").toString());
-				out.println("</th></tr>");
-				out.println("</table>");
-				out.println();
-				
-				
-				
-				if (doc.getFieldValue("machineTags")!=null){
-					out.println("Machine class:" + doc.getFieldValue("machineTags"));
-				} 
-				else{
-					out.println("Machine class: null"); 
-				}
-				
-				iRow++;
-			}
+		//sConn.setSolrURL("http://172.24.60.110:8983/solr/test");
+		//sConn.setSolrURL("http://localhost:8983/solr/Test1/");
+		//sConn.setQueryParams("q","content:急诊 AND content:门诊 AND content:住院 AND content: 质量 AND content:服务 AND content:整形");
+		//sConn.resetQueryParams();
+		Random rn = new Random();
+		int startNum = rn.nextInt(5000);
+		
+		System.out.println("random number: "+startNum);
+		sConn.setQueryParams("start", String.valueOf(startNum));
+		sConn.setQueryParams("rows", "1");	
+		try {
+			solr_response = sConn.getContent();	
 		} catch(Exception e){
-			System.out.println(e);
+			//System.out.println(e);
+		}
+		
+		SolrDocument doc = solr_response.getResults().get(0);
+		id = doc.getFieldValue("id").toString();
+		System.out.println("id : " + id);
+		System.out.println("content: " + doc.getFieldValue("content").toString());
+		
+		out.println("<table border=2>");
+		out.println("<tr><th>");
+		out.println("id: ");
+		out.println("</th><th>");
+		out.println("content");
+		out.println("</th></tr>");
+		out.println("<tr><td>");
+		out.println(id);
+		out.println("</td><td>");
+		out.println(doc.getFieldValue("content").toString());
+		out.println("</td></tr>");
+		out.println("</table>");
+		out.println();
+			
+		if (doc.getFieldValue("machineTags") != null) {
+			out.println("Machine class:" + doc.getFieldValue("machineTags"));
+		} else {
+			out.println("Machine class: null");
 		}
 	%>
-	
-	<form action="test1.jsp" method="GET" target="_blank">
+
+	<form action="test1.jsp" name="classification" method="GET" target="_blank" 
+	onsubmit="alert('Are you sure?')">
 	<% 
-	out.println("<input type = \"hidden\" name = \"version\" value = \"" + versionId + "\" />");
+	out.println("<input type = \"hidden\" name = \"id\" value = \"" + id + "\" />");
 	%>
-
-	<input type="checkbox" name="medical" checked="checked" /> medical
-	<input type="checkbox" name="non_medical"  /> non_medical
-	<input type="submit" value="submit" />
+	<input type="checkbox" name="medical" checked="checked" /> medical 
+	<input type="checkbox" name="non_medical" /> non_medical 
+	<input type="submit" value="submit"/>
 	</form>
-		
-		
-	
-	
 
 
 
-  
+
+
+
+
+
 </body>
 </html>

@@ -1070,3 +1070,40 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp
 
 !ENTRY org.eclipse.jface.text 2 0 2016-08-21 08:52:02.132
 !MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+!SESSION 2016-08-21 20:06:46.929 -----------------------------------------------
+eclipse.buildId=4.6.0.I20160606-1100
+java.version=1.8.0_101
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.jst.jsp.core 4 4 2016-08-21 20:15:04.117
+!MESSAGE JavaPosition was null!2709
+
+!ENTRY org.eclipse.jst.jsp.core 4 4 2016-08-21 20:15:04.424
+!MESSAGE JavaPosition was null!2722
+
+!ENTRY org.eclipse.jface.text 2 0 2016-08-21 21:03:23.845
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2016-08-21 21:03:23.848
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+
+!ENTRY org.eclipse.jface.text 2 0 2016-08-21 21:03:23.931
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2016-08-21 21:03:23.944
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+
+!ENTRY org.eclipse.jface.text 2 0 2016-08-21 22:09:27.586
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2016-08-21 22:09:27.586
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+
+!ENTRY org.eclipse.jface.text 2 0 2016-08-22 04:13:10.345
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2016-08-22 04:13:10.348
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'

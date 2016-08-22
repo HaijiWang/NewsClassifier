@@ -14,5 +14,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/solr-solrj-4.8-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/noggit-0.5.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

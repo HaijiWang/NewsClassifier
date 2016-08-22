@@ -43,7 +43,7 @@ public class LocalSample {
 		QueryResponse solr_response = null;
 
 		try {
-			SolrConnection my_crawler = new SolrConnection();
+			SolrConnection_old my_crawler = new SolrConnection_old();
 			solr_response = my_crawler.getContent(query_params);
 		} catch (Exception e) {
 			System.out.println("Error: solrConnection.getContent() called by LocalSample.allocateFiles().");
@@ -118,9 +118,9 @@ public class LocalSample {
 		HashMap<String, String> query_params = new HashMap<String, String>();
 
 		//query_params.put("q",
-		//		"content:¼±Õï AND content:ÃÅÕï AND content:×¡Ôº AND content: ÖÊÁ¿ AND content:·þÎñ AND content:ÕûÐÎ AND content:ÂúÒâ¶È");
+		//		"content:ï¿½ï¿½ï¿½ï¿½ AND content:ï¿½ï¿½ï¿½ï¿½ AND content:×¡Ôº AND content: ï¿½ï¿½ï¿½ï¿½ AND content:ï¿½ï¿½ï¿½ï¿½ AND content:ï¿½ï¿½ï¿½ï¿½ AND content:ï¿½ï¿½ï¿½ï¿½ï¿½");
 		query_params.put("q",
-				"content:¼±Õï AND content:ÃÅÕï AND content:×¡Ôº AND content: ÖÊÁ¿ AND content:·þÎñ");
+				"content:ï¿½ï¿½ï¿½ï¿½ AND content:ï¿½ï¿½ï¿½ï¿½ AND content:×¡Ôº AND content: ï¿½ï¿½ï¿½ï¿½ AND content:ï¿½ï¿½ï¿½ï¿½");
 		
 		query_params.put("fq", null);
 		query_params.put("fl", "id,content,_version_,artificialTags,machineTags");
@@ -133,7 +133,7 @@ public class LocalSample {
 		//tmp.allocateFiles(dest_path_1,query_params);
 		
 		query_params.put("q",
-				"!content:¼±Õï !content:ÃÅÕï !content:×¡Ôº !content: ÖÊÁ¿ !content:·þÎñ");
+				"!content:ï¿½ï¿½ï¿½ï¿½ !content:ï¿½ï¿½ï¿½ï¿½ !content:×¡Ôº !content: ï¿½ï¿½ï¿½ï¿½ !content:ï¿½ï¿½ï¿½ï¿½");
 		
 		query_params.put("fq", null);
 		query_params.put("rows", "50");

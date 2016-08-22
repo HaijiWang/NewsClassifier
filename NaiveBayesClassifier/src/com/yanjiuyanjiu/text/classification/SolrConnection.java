@@ -160,7 +160,7 @@ public class SolrConnection {
 
 		SolrConnection tmp_conn = new SolrConnection();
 		tmp_conn.setParams("rows", "1");
-		tmp_conn.setSolrURL("http://58.213.107.34/solr/");
+		//tmp_conn.setSolrURL("http://58.213.107.34/solr/");
 		try {
 			solr_response = tmp_conn.getContent();
 		} catch (Exception e) {
@@ -177,8 +177,8 @@ public class SolrConnection {
 			Iterator<String> itr = doc.getFieldNames().iterator();
 			while (itr.hasNext()) {
 				String key = itr.next();
-				if (key!="_version_"){
-						update_param.put(key, doc.getFieldValue(key));
+				if (!key.equals("_version_")){
+					update_param.put(key, doc.getFieldValue(key));
 				}
 				itr.remove(); // avoids a ConcurrentModificationException
 			}
