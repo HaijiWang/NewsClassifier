@@ -1,4 +1,4 @@
-package com.yanjiuyanjiu.text.classification;
+package solr_classification.com;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,7 +20,7 @@ public class MultiNomialNB extends NaiveBayesClassifier {
 				String t = iter.next();
 				
 				Integer value = source.get(t);
-				if(value == null) { // ±¾Àà±ðÏÂ²»°üº¬µ¥´Êt
+				if(value == null) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½t
 					value = 0;
 				}
 				model.setPxc(t, i, (double)(value + 1)/(double)(db.tokensOfC[i] + db.vocabulary.size()));
@@ -32,12 +32,12 @@ public class MultiNomialNB extends NaiveBayesClassifier {
 	
     protected double calcProd(final String[] x, final int cj) {
         double ret = 0.0;
-        // ÀàÌõ¼þ¸ÅÂÊÁ¬³Ë
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         for (int i = 0; i < x.length; i++) {
-            // ÒòÎª½á¹û¹ýÐ¡£¬Òò´ËÔÚÁ¬³ËÖ®Ç°·Å´ó10±¶£¬Õâ¶Ô×îÖÕ½á¹û²¢ÎÞÓ°Ïì£¬ÒòÎªÎÒÃÇÖ»ÊÇ±È½Ï¸ÅÂÊ´óÐ¡¶øÒÑ
+            // ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®Ç°ï¿½Å´ï¿½10ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ì£¬ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ö»ï¿½Ç±È½Ï¸ï¿½ï¿½Ê´ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
             ret += Math.log(model.getPxc(x[i], cj));
         }
-        // ÔÙ³ËÒÔÏÈÑé¸ÅÂÊ
+        // ï¿½Ù³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         ret += Math.log(model.getPc(cj));
         return ret;
     }

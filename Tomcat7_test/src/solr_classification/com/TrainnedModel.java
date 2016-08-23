@@ -1,17 +1,17 @@
-package com.yanjiuyanjiu.text.classification;
+package solr_classification.com;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class TrainnedModel implements Serializable {
-	/** Àà±ğÃû. */
+	/** ï¿½ï¿½ï¿½ï¿½ï¿½. */
 	public String[] classifications;
-	/** ÓïÁÏ¿âÖĞËù³öÏÖ¹ıµÄµ¥´Ê. */
-	HashSet<String> vocabulary;	// ½öBernoulliNBÔÚ·ÖÀàÊ±calcProd()ÒªÓÃµ½
-	/** Àà±ğµÄÏÈÑé¸ÅÂÊ. */
+	/** ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½Äµï¿½ï¿½ï¿½. */
+	HashSet<String> vocabulary;	// ï¿½ï¿½BernoulliNBï¿½Ú·ï¿½ï¿½ï¿½Ê±calcProd()Òªï¿½Ãµï¿½
+	/** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. */
 	private double[] pC;
-    /** ÊôĞÔµÄÀàÌõ¼ş¸ÅÂÊ£¬String µÄ¸ñÊ½Îª ÊôĞÔÃû#Àà±ğÃû. */
+    /** ï¿½ï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê£ï¿½String ï¿½Ä¸ï¿½Ê½Îª ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½#ï¿½ï¿½ï¿½ï¿½ï¿½. */
 	private HashMap[] pXC;
     
     
@@ -24,22 +24,22 @@ public class TrainnedModel implements Serializable {
     }
     
     /**
-     * ÏÈÑé¸ÅÂÊ.
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
      * 
      * @param c
-     *            ¸ø¶¨µÄ·ÖÀà
-     * @return ¸ø¶¨Ìõ¼şÏÂµÄÏÈÑé¸ÅÂÊ
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
+     * @return ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     public final double getPc(final int c) {
         return pC[c];
     }
     
     /**
-     * ÉèÖÃÏÈÑé¸ÅÂÊ.
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
      * 
      * @param c
-     *            ¸ø¶¨µÄ·ÖÀà
-     * @return ¸ø¶¨Ìõ¼şÏÂµÄÏÈÑé¸ÅÂÊ
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
+     * @return ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     public final void setPc(final int c, double p) {
         pC[c] = p;
@@ -47,13 +47,13 @@ public class TrainnedModel implements Serializable {
     
     
     /**
-     * »ñµÃÀàÌõ¼ş¸ÅÂÊ.
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
      * 
      * @param x
-     *            ¸ø¶¨µÄÎÄ±¾ÊôĞÔ
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½
      * @param c
-     *            ¸ø¶¨µÄ·ÖÀà
-     * @return ¸ÃÊôĞÔµÄÀàÌõ¼ş¸ÅÂÊ
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
+     * @return ï¿½ï¿½ï¿½ï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     public final double getPxc(final String x, final int c) {
     	Double ret = 1.0;
@@ -69,13 +69,13 @@ public class TrainnedModel implements Serializable {
     
     
     /**
-     * ÉèÖÃÀàÌõ¼ş¸ÅÂÊ.
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
      * 
      * @param x
-     *            ¸ø¶¨µÄÎÄ±¾ÊôĞÔ
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½
      * @param c
-     *            ¸ø¶¨µÄ·ÖÀà
-     * @return ¸ÃÊôĞÔµÄÀàÌõ¼ş¸ÅÂÊ
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
+     * @return ï¿½ï¿½ï¿½ï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     public final void setPxc(final String x, final int c, double p) {
     	pXC[c].put(x, p);

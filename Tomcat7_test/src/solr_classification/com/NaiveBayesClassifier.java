@@ -1,4 +1,4 @@
-package com.yanjiuyanjiu.text.classification;
+package solr_classification.com;
 
 
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * ÆÓËØ±´Ò¶Ë¹·ÖÀàÆ÷.
+ * ï¿½ï¿½ï¿½Ø±ï¿½Ò¶Ë¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
  */
 public class NaiveBayesClassifier {
 	protected TrainnedModel model;
@@ -28,14 +28,14 @@ public class NaiveBayesClassifier {
     
     /* ===========================================================================*/
     /* =============================   Usage      ================================*/
-    /** ´òÓ¡ÃüÁîÐÐ²ÎÊýµÄ½âÊÍÐÅÏ¢. */
+    /** ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢. */
     private static void usage() {
-    	// ¸ù¾ÝÖÐ¼äÊý¾ÝÎÄ¼þ£¬ÑµÁ·²úÉúÄ£ÐÍÎÄ¼þ
-        System.err.println("usage:\t -t <ÖÐ¼äÎÄ¼þ> <Ä£ÐÍÎÄ¼þ>");
-        // ¶ÔÒÑ¾­·ÖÀàºÃµÄÎÄ±¾¿â£¬ÓÃÄ³¸öÄ£ÐÍÎÄ¼þÀ´·ÖÀà£¬²âÊÔÕýÈ·ÂÊ
-        System.err.println("usage:\t -r <ÓïÁÏ¿âÄ¿Â¼> <ÓïÁÏ¿âÎÄ±¾±àÂë> <Ä£ÐÍÎÄ¼þ>");
-        // ÓÃÄ³Ò»¸öÑµÁ·ºÃµÄÄ£ÐÍÎÄ¼þ£¬À´·ÖÀàÄ³¸öÎÄ±¾ÎÄ¼þ
-        System.err.println("usage:\t <Ä£ÐÍÎÄ¼þ> <ÎÄ±¾ÎÄ¼þ> <ÎÄ±¾ÎÄ¼þ±àÂë>");
+    	// ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ä¼ï¿½
+        System.err.println("usage:\t -t <ï¿½Ð¼ï¿½ï¿½Ä¼ï¿½> <Ä£ï¿½ï¿½ï¿½Ä¼ï¿½>");
+        // ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ä±ï¿½ï¿½â£¬ï¿½ï¿½Ä³ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½
+        System.err.println("usage:\t -r <ï¿½ï¿½ï¿½Ï¿ï¿½Ä¿Â¼> <ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½> <Ä£ï¿½ï¿½ï¿½Ä¼ï¿½>");
+        // ï¿½ï¿½Ä³Ò»ï¿½ï¿½Ñµï¿½ï¿½ï¿½Ãµï¿½Ä£ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½Ä±ï¿½ï¿½Ä¼ï¿½
+        System.err.println("usage:\t <Ä£ï¿½ï¿½ï¿½Ä¼ï¿½> <ï¿½Ä±ï¿½ï¿½Ä¼ï¿½> <ï¿½Ä±ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½>");
     }
     
     /* ===========================================================================*/
@@ -53,10 +53,10 @@ public class NaiveBayesClassifier {
     /* ===========================================================================*/
     /* =============  Load Model created after training  ==========================*/
     /**
-     * ¼ÓÔØÊý¾ÝÄ£ÐÍÎÄ¼þ.
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ä¼ï¿½.
      * 
      * @param modelFile
-     *            Ä£ÐÍÎÄ¼þÂ·¾¶
+     *            Ä£ï¿½ï¿½ï¿½Ä¼ï¿½Â·ï¿½ï¿½
      */
 	public final void loadModel(final String modelFile) {
         try {
@@ -74,7 +74,7 @@ public class NaiveBayesClassifier {
 	/* ========================================================================*/
     /* ============================= Train =====================================*/
     public final void train(String intermediateData_path, String modelFile_path) {
-    	// ¼ÓÔØÖÐ¼äÊý¾ÝÎÄ¼þ
+    	// ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
     	loadData(intermediateData_path);
     	
     	model = new TrainnedModel(db.classifications.length);
@@ -83,13 +83,13 @@ public class NaiveBayesClassifier {
     	model.vocabulary = db.vocabulary;
     	System.out.println("Vocabulary lengh: " + model.vocabulary.size());
     	System.out.println("Training model...");
-    	// ¿ªÊ¼ÑµÁ·
+    	// ï¿½ï¿½Ê¼Ñµï¿½ï¿½
     	calculatePc();
     	calculatePxc();
     	db = null;
     	
     	try {
-    		// ÓÃÐòÁÐ»¯£¬½«ÑµÁ·µÃµ½µÄ½á¹û´æ·Åµ½Ä£ÐÍÎÄ¼þÖÐ
+    		// ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½Ãµï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½Åµï¿½Ä£ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
             ObjectOutputStream out = new ObjectOutputStream(
                     new FileOutputStream(modelFile_path));
             out.writeObject(model);
@@ -103,21 +103,21 @@ public class NaiveBayesClassifier {
 	/* ===========================================================================*/
     /* ========================== Classify =======================================*/
     /**
-     * ¶Ô¸ø¶¨µÄÎÄ±¾½øÐÐ·ÖÀà.
+     * ï¿½Ô¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½Ð·ï¿½ï¿½ï¿½.
      * 
      * @param text
-     *            ¸ø¶¨µÄÎÄ±¾
-     * @return ·ÖÀà½á¹û
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½
+     * @return ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     public final String classify(final String text) {
         String[] terms = null;
-        // ÖÐÎÄ·Ö´Ê´¦Àí(·Ö´Êºó½á¹û¿ÉÄÜ»¹°üº¬ÓÐÍ£ÓÃ´Ê£©
+        // ï¿½ï¿½ï¿½Ä·Ö´Ê´ï¿½ï¿½ï¿½(ï¿½Ö´Êºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½Ã´Ê£ï¿½
         System.out.println("text splitting....");
         long start_time_1 = System.currentTimeMillis();
         
         
         //terms = textSpliter.split(text, " ").split(" ");
-        //terms = ChineseSpliter.dropStopWords(terms); // È¥µôÍ£ÓÃ´Ê£¬ÒÔÃâÓ°Ïì·ÖÀà
+        //terms = ChineseSpliter.dropStopWords(terms); // È¥ï¿½ï¿½Í£ï¿½Ã´Ê£ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½ï¿½ï¿½ï¿½
         
         terms = Chinese_parser.participle(text);
         System.out.println("Splitted terms: " 
@@ -131,21 +131,21 @@ public class NaiveBayesClassifier {
         
         long start_time_2 = System.currentTimeMillis(); 
         double probility = 0.0;
-        List<ClassifyResult> crs = new ArrayList<ClassifyResult>(); // ·ÖÀà½á¹û
+        List<ClassifyResult> crs = new ArrayList<ClassifyResult>(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         for (int i = 0; i < model.classifications.length; i++) {
-            // ¼ÆËã¸ø¶¨µÄÎÄ±¾ÊôÐÔÏòÁ¿termsÔÚ¸ø¶¨µÄ·ÖÀàCiÖÐµÄ·ÖÀàÌõ¼þ¸ÅÂÊ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½termsï¿½Ú¸ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½Ciï¿½ÐµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             probility = calcProd(terms, i);
-            // ±£´æ·ÖÀà½á¹û
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             ClassifyResult cr = new ClassifyResult();
-            cr.classification = model.classifications[i]; // ·ÖÀà
-            cr.probility = probility; // ¹Ø¼ü×ÖÔÚ·ÖÀàµÄÌõ¼þ¸ÅÂÊ
+            cr.classification = model.classifications[i]; // ï¿½ï¿½ï¿½ï¿½
+            cr.probility = probility; // ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             System.out.println("In process....");
-            System.out.println(model.classifications[i] + "£º" + probility);
+            System.out.println(model.classifications[i] + "ï¿½ï¿½" + probility);
             crs.add(cr);
         }
-        long end_time_2 = System.currentTimeMillis(); // »ñÈ¡½áÊøÊ±¼ä
-        System.out.println("ËùÓÐÀà±ð¸ÅÂÊ¼ÆËãÊ±¼ä£º " + (end_time_2 - start_time_2) + "ms");
-        // ÕÒ³ö×î´óµÄÔªËØ
+        long end_time_2 = System.currentTimeMillis(); // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+        System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ê±ï¿½ä£º " + (end_time_2 - start_time_2) + "ms");
+        // ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
         ClassifyResult maxElem = (ClassifyResult) java.util.Collections.max(
                 crs, new Comparator() {
                     public int compare(final Object o1, final Object o2) {
@@ -181,7 +181,7 @@ public class NaiveBayesClassifier {
         File dir = new File(classifiedDir);
         
         if (!dir.isDirectory()) {
-            throw new IllegalArgumentException("ÑµÁ·ÓïÁÏ¿âËÑË÷Ê§°Ü£¡ [" + classifiedDir
+            throw new IllegalArgumentException("Ñµï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ [" + classifiedDir
                     + "]");
         }
 
@@ -198,7 +198,7 @@ public class NaiveBayesClassifier {
                     e.printStackTrace();
                 }
                 String classification = classify(text);
-                if(classification.equals(c)) { // ¼ÆËã³öµÄÀà±ð£¬ºÍÔ­Ê¼µÄÀà±ðÊÇ·ñÏàÍ¬
+                if(classification.equals(c)) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ð£¬ºï¿½Ô­Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Í¬
                     correct++;
                 }
             }
@@ -208,23 +208,23 @@ public class NaiveBayesClassifier {
     
     /* ===========================================================================*/
     /* ============ Methods that will be defined by inheriting classes ==============*/
-    /** ¼ÆËãÏÈÑé¸ÅÂÊP(c). */
+    /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½P(c). */
     protected void calculatePc() {
     }
     
-    /** ¼ÆËãÀàÌõ¼þ¸ÅÂÊP(x|c). */
+    /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½P(x|c). */
     protected void calculatePxc() {
     }
     
     
     /**
-     * ¼ÆËãÎÄ±¾ÊôÐÔÏòÁ¿XÔÚÀàCjÏÂµÄºóÑé¸ÅÂÊP(Cj|X).
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½Cjï¿½ÂµÄºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½P(Cj|X).
      * 
      * @param x
-     *            ÎÄ±¾ÊôÐÔÏòÁ¿
+     *            ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      * @param cj
-     *            ¸ø¶¨µÄÀà±ð
-     * @return ºóÑé¸ÅÂÊ
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     * @return ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     protected double calcProd(final String[] x, final int cj) {
         return 0;
@@ -233,23 +233,23 @@ public class NaiveBayesClassifier {
     /* ===========================================================================*/
     /* ======================== Top method: test  ================================*/
     public static void test(NaiveBayesClassifier classifier, String[] args) {
-    	long startTime = System.currentTimeMillis(); // »ñÈ¡¿ªÊ¼Ê±¼ä
+    	long startTime = System.currentTimeMillis(); // ï¿½ï¿½È¡ï¿½ï¿½Ê¼Ê±ï¿½ï¿½
         if (args.length < 3) {
             usage();
             return;
         }
 
-        if (args[0].equals("-t")) { // ÑµÁ·
+        if (args[0].equals("-t")) { // Ñµï¿½ï¿½
             classifier.train(args[1], args[2]);
-            System.out.println("ÑµÁ·Íê±Ï");
+            System.out.println("Ñµï¿½ï¿½ï¿½ï¿½ï¿½");
         } 
         
-        else if(args[0].equals("-r")) { // »ñÈ¡ÕýÈ·ÂÊ
+        else if(args[0].equals("-r")) { // ï¿½ï¿½È¡ï¿½ï¿½È·ï¿½ï¿½
             double ret = classifier.getCorrectRate(args[1], args[2], args[3]);
-            System.out.println("ÕýÈ·ÂÊÎª£º" + ret);
+            System.out.println("ï¿½ï¿½È·ï¿½ï¿½Îªï¿½ï¿½" + ret);
         } 
         
-        else { // ·ÖÀà
+        else { // ï¿½ï¿½ï¿½ï¿½
             classifier.loadModel(args[0]);
 
             String text = null;
@@ -260,12 +260,12 @@ public class NaiveBayesClassifier {
             }
 
             
-            String result = classifier.classify(text); // ½øÐÐ·ÖÀà
+            String result = classifier.classify(text); // ï¿½ï¿½ï¿½Ð·ï¿½ï¿½ï¿½
 
-            System.out.println("´ËÊôÓÚ[" + result + "]");
+            System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[" + result + "]");
         }
 
-        long endTime = System.currentTimeMillis(); // »ñÈ¡½áÊøÊ±¼ä
-        System.out.println("³ÌÐòÔËÐÐÊ±¼ä£º " + (endTime - startTime) + "ms");
+        long endTime = System.currentTimeMillis(); // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+        System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£º " + (endTime - startTime) + "ms");
     }
 }

@@ -1,4 +1,5 @@
 /**
- * °üº¬Ò»Ð©ÎÄ±¾·ÖÀàµÄËã·¨.
+ * ï¿½ï¿½ï¿½ï¿½Ò»Ð©ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·¨.
  */
-package com.yanjiuyanjiu.text.classification;
+package solr_classification.com;
+

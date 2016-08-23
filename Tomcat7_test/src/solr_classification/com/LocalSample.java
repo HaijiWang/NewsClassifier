@@ -1,4 +1,4 @@
-package com.yanjiuyanjiu.text.classification;
+package solr_classification.com;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

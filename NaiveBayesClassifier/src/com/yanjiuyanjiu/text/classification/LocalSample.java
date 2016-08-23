@@ -44,7 +44,9 @@ public class LocalSample {
 
 		try {
 			SolrConnection my_crawler = new SolrConnection();
-			solr_response = my_crawler.getContent(query_params);
+			my_crawler.setSolrURL("http://172.24.60.110:8983/solr/test");
+			my_crawler.setQueryParams(query_params);
+			solr_response = my_crawler.getContent();
 		} catch (Exception e) {
 			System.out.println("Error: solrConnection.getContent() called by LocalSample.allocateFiles().");
 			System.out.println(e);

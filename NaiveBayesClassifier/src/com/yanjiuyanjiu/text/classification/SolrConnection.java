@@ -34,6 +34,15 @@ public class SolrConnection {
 		// private final String SOLR_URL = "http://58.213.107.34/solr/";
 
 		server = new HttpSolrServer(SOLR_URL);
+		
+		server.setMaxRetries(1);
+		server.setMaxRetries(1); // defaults to 0. > 1 not recommended.
+		server.setConnectionTimeout(5000); // 5 seconds to establish TCP
+		server.setParser(new XMLResponseParser());
+		server.setSoTimeout(1000); // socket read timeout
+		server.setDefaultMaxConnectionsPerHost(100);
+		server.setMaxTotalConnections(100);
+		server.setFollowRedirects(false); // defaults to false
 
 		query_params.put("q", "*:*");
 		query_params.put("fq", null);
@@ -49,25 +58,50 @@ public class SolrConnection {
 		SOLR_URL = url;
 		server = new HttpSolrServer(SOLR_URL);
 		// optional settings:
-				server.setMaxRetries(1);
-				server.setMaxRetries(1); // defaults to 0. > 1 not recommended.
-				server.setConnectionTimeout(5000); // 5 seconds to establish TCP
-				server.setParser(new XMLResponseParser());
-				server.setSoTimeout(1000); // socket read timeout
-				server.setDefaultMaxConnectionsPerHost(100);
-				server.setMaxTotalConnections(100);
-				server.setFollowRedirects(false); // defaults to false
+		server.setMaxRetries(1);
+		server.setMaxRetries(1); // defaults to 0. > 1 not recommended.
+		server.setConnectionTimeout(5000); // 5 seconds to establish TCP
+		server.setParser(new XMLResponseParser());
+		server.setSoTimeout(1000); // socket read timeout
+		server.setDefaultMaxConnectionsPerHost(100);
+		server.setMaxTotalConnections(100);
+		server.setFollowRedirects(false); // defaults to false
+	}
+	
+	public void resetQueryParams() {
+		//System.out.println("Debugz: IN resetQUeryParams");
+
+		query_params.put("q", "*:*");
+		query_params.put("fq", null);
+		query_params.put("fl", null);
+		query_params.put("start", "0");
+		query_params.put("rows", "1"); // default to one row
+		query_params.put("sort", null);
+		query_params.put("hl", null);
+		query_params.put("facet", null);
 	}
 
-	public void setParams(String key, String value) {
+	public void setQueryParams(HashMap<String, String> params) {
+		this.resetQueryParams();
+		Iterator<String> itr = params.keySet().iterator();
+		while (itr.hasNext()){
+			String key = itr.next();
 		if (query_params.containsKey(key)) {
-			query_params.put(key, value);
+			query_params.put(key, params.get(key));
 		} else {
 			System.out.println("query params does not have key:" + key);
+		}
 		}
 
 	}
 
+	public ArrayList<String> getClasses(){
+		ArrayList<String> classes = new ArrayList<String>();
+		classes.add("medical");
+		classes.add("non_medical");
+		return classes;
+	}
+	
 	/**
 	 * List<String> ids new ArrayList<String>() ids.add("the id");
 	 */
@@ -131,36 +165,107 @@ public class SolrConnection {
 	
 	public static void main_delete(String args[]){
 	//public static void main(String args[]){
+		QueryResponse solr_response = null;
+
 		SolrConnection tmp_conn = new SolrConnection();
+		tmp_conn.setSolrURL("http://localhost:8983/solr/Test1");
+		
+		HashMap<String,String> params = new HashMap<String,String>();
+		params.put("rows", "16");
+		//tmp_conn.resetQueryParams();
+		tmp_conn.setQueryParams(params);
+		//tmp_conn.setQueryParams("q","id:"+QueryParser.escape("com.xinhuanet.js.www:http/2013-10/14/c_117706867_16.htm"));
+		
+		try {
+			solr_response = tmp_conn.getContent();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		for (SolrDocument doc:solr_response.getResults()){
+			//String id = doc.getFieldValue("id").toString();
+		
 		List<String> ids = new ArrayList<String>();
 		//ids.add("3");
 		//ids.add("8");
 		//ids.add("7");
-		ids.add("1677c8a1-8374-4c8a-9fe8-f3ad665b0b4a");
+		ids.add(doc.getFieldValue("id").toString());
 		tmp_conn.deleteContentById(ids);
+		}
 	}
 
 	public static void main_add(String args[]){
+	//public static void main(String args[]){	
 		SolrConnection tmp_conn = new SolrConnection();
-		tmp_conn.setSolrURL("http://localhost:8983/solr/Test1");
+		tmp_conn.setSolrURL("http://172.24.60.110:8983/solr/test");
+		//tmp_conn.setSolrURL("http://localhost:8983/solr/Test1");
 		
-		HashMap<String,Object> update_param = new HashMap<String,Object>();
-		update_param.put("id","6");
-		update_param.put("title","title2");
+		Map<String, Object> update_params = new HashMap<String, Object>();
+		Map<String,String> fieldModifier = new HashMap<String,String>();
+		//fieldModifier.put("set","medical"); 
+		//update_params.put("artificialTags",fieldModifier);
+		update_params.put("artificialTags","not_set");
+		// something wrong with find the id in solr
+		update_params.put("id","http://www.js.xinhuanet.com/2013-10/14/c_117706867_16.htm");
+		
+		
 		try{
-			tmp_conn.updateContent(update_param);
+			tmp_conn.updateContent(update_params);
 		} catch(Exception e){
 			System.out.println(e);
 		}
 	}
+	
+	//public static void main_setTags(String args[]){
+	public static void main(String args[]){
 
-	public static void main(String args[]) {
+		SolrConnection tmp_conn = new SolrConnection();
+		//tmp_conn.setSolrURL("http://localhost:8983/solr/Test1");
+		tmp_conn.setSolrURL("http://172.24.60.110:8983/solr/test");
+		
+		
+		HashMap<String,String> params = new HashMap<String,String>();
+		params.put("rows", "20");
+		//tmp_conn.resetQueryParams();
+		tmp_conn.setQueryParams(params);
+		//tmp_conn.setQueryParams("q","id:"+QueryParser.escape("com.xinhuanet.js.www:http/2013-10/14/c_117706867_16.htm"));
+		QueryResponse solr_response = null;
+		try {
+			solr_response = tmp_conn.getContent();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		for (SolrDocument doc:solr_response.getResults()){
+			//String id = doc.getFieldValue("id").toString();
+			Map<String, Object> update_params = new HashMap<String, Object>();
+			Map<String,String> fieldModifier = new HashMap<String,String>();
+			//fieldModifier.put("set","medical"); 
+			//update_params.put("artificialTags",fieldModifier);
+			//update_params.put("artificialTags","not set yet");
+			//update_params.put("additionalTags","look!");
+			update_params.put("id",doc.getFieldValue("id"));
+			//update_params.put("badNum","10");
+			update_params.put("artificialTags","set");
+			//update_params.put("machineTags","");
+			try{
+				tmp_conn.updateContent(update_params);
+			} catch(Exception e){
+				System.out.println(e);
+			}
+		}
+	}
+
+
+	public static void main_transfer(String args[]) {
+	//public static void main(String args[]){
 
 		QueryResponse solr_response = null;
 
 		SolrConnection tmp_conn = new SolrConnection();
-		tmp_conn.setParams("rows", "1");
-		//tmp_conn.setSolrURL("http://58.213.107.34/solr/");
+		
+		HashMap<String,String> params = new HashMap<String,String>();
+		params.put("rows", "10");
+		tmp_conn.setQueryParams(params);
+		tmp_conn.setSolrURL("http://58.213.107.34/solr/");
 		try {
 			solr_response = tmp_conn.getContent();
 		} catch (Exception e) {
@@ -182,7 +287,9 @@ public class SolrConnection {
 				}
 				itr.remove(); // avoids a ConcurrentModificationException
 			}
-			System.out.println("Debug!!!!!");
+			update_param.put("artificialTags","not_set");
+			update_param.put("machineTags", "not_set");
+			//System.out.println("Debug!!!!!");
 			//update_param.put("id","2");
 			//update_param.put("title","title2");
 			tmp_conn.setSolrURL("http://localhost:8983/solr/Test1");

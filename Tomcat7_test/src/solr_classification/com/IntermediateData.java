@@ -1,4 +1,4 @@
-package com.yanjiuyanjiu.text.classification;
+package solr_classification.com;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,32 +20,32 @@ public class IntermediateData implements Serializable {
 	 */
 	private static final long serialVersionUID = -420389048890617397L;
 
-	/** Àà±ðÃû. */
+	/** ï¿½ï¿½ï¿½ï¿½ï¿½. */
     public String[] classifications;
     
-    /** µ¥´ÊXÔÚÀà±ðCÏÂ³öÏÖµÄ×ÜÊý. */
+    /** ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½Â³ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½. */
 	public HashMap[] filesOfXC;
-	/** ¸ø¶¨·ÖÀàÏÂµÄÎÄ¼þÊýÄ¿. */
+	/** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ä¿. */
     public int[] filesOfC;
-    /** ¸ùÄ¿Â¼ÏÂµÄÎÄ¼þ×ÜÊý. */
+    /** ï¿½ï¿½Ä¿Â¼ï¿½Âµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½. */
     public int files;
     
-	/** µ¥´ÊXÔÚÀà±ðCÏÂ³öÏÖµÄ×ÜÊý */
+	/** ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½Â³ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ */
 	public HashMap[] tokensOfXC;
-    /** Àà±ðCÏÂËùÓÐµ¥´ÊµÄ×ÜÊý. */
+    /** ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½. */
     public int[] tokensOfC;
-    /** Õû¸öÓïÁÏ¿âÖÐµ¥´ÊµÄ×ÜÊý. */
+    /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½Ðµï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½. */
     public int tokens;
-    /** Õû¸öÑµÁ·ÓïÁÏËù³öÏÖµÄµ¥´Ê. */
+    /** ï¿½ï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÄµï¿½ï¿½ï¿½. */
     public HashSet<String> vocabulary;
     
     
     
-    /** ÎÄ±¾·ÖÀàÓïÁÏµÄ¸ùÄ¿Â¼. */
+    /** ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ¸ï¿½Ä¿Â¼. */
     private transient String dir;
-    /** ÓïÁÏ¿âÖÐµÄÎÄ±¾ÎÄ¼þµÄ×Ö·û±àÂë. */
+    /** ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½Ðµï¿½ï¿½Ä±ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½. */
     private transient String encoding;
-    /** ÖÐÎÄ·Ö´Ê. */
+    /** ï¿½ï¿½ï¿½Ä·Ö´ï¿½. */
     //private transient ChineseSpliter textSpliter;
     
     public IntermediateData() {
@@ -54,34 +54,34 @@ public class IntermediateData implements Serializable {
     }
     
     /**
-     * Ô¤¼ÆËã£¬²úÉúÖÐ¼ä½á¹û£¬´æ·Åµ½´ÅÅÌÖÐ.
+     * Ô¤ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
      * 
      * @param trainTextDir
-     *            ÒÑ¾­·ÖÀàµÄÓïÁÏ¿â£¬½á¹¹Îª 
+     *            ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿â£¬ï¿½á¹¹Îª 
      * trainnedTextDir 
-     *            ©À- Àà±ð1\
-     *                    ©À- ÎÄ¼þ1.txt 
-     *                    ©À- ÎÄ¼þ2.txt ...
-     *            ©À- Àà±ð2\
-     *                    ©À- ÎÄ¼þ1.txt 
-     *                    ©À- ÎÄ¼þ2.txt ...
+     *            ï¿½ï¿½- ï¿½ï¿½ï¿½1\
+     *                    ï¿½ï¿½- ï¿½Ä¼ï¿½1.txt 
+     *                    ï¿½ï¿½- ï¿½Ä¼ï¿½2.txt ...
+     *            ï¿½ï¿½- ï¿½ï¿½ï¿½2\
+     *                    ï¿½ï¿½- ï¿½Ä¼ï¿½1.txt 
+     *                    ï¿½ï¿½- ï¿½Ä¼ï¿½2.txt ...
      * @param txtEncoding
-     *            ÓïÁÏ¿âÖÐµÄÎÄ±¾ÎÄ¼þ±àÂë
+     *            ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½Ðµï¿½ï¿½Ä±ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     public final void generate(final String trainTextDir,
             final String txtEncoding, final String modelFile) {
-        // Ò»Ð©³õÊ¼»¯¶¯×÷
+        // Ò»Ð©ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         dir = trainTextDir;
         if (txtEncoding == null) {
-            encoding = "GBK"; // Ä¬ÈÏÎÄ±¾ÎÄ¼þµÄ±àÂëÎªGBK;
+            encoding = "GBK"; // Ä¬ï¿½ï¿½ï¿½Ä±ï¿½ï¿½Ä¼ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ÎªGBK;
         } else {
             encoding = txtEncoding;
         }
 
-        // Ã¶¾ÙÄ¿Â¼£¬»ñµÃ¸÷¸öÀàÃû
+        // Ã¶ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         File tmpDir = new File(dir);
         if (!tmpDir.isDirectory()) {
-            throw new IllegalArgumentException("ÑµÁ·ÓïÁÏ¿âËÑË÷Ê§°Ü£¡ [" + dir
+            throw new IllegalArgumentException("Ñµï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ [" + dir
                     + "]");
         }
         classifications = tmpDir.list();
@@ -95,28 +95,28 @@ public class IntermediateData implements Serializable {
         	filesOfXC[i] = new HashMap<String, Integer>();
         }
         
-        // ¼ÆËã¸÷¸öÀà±ðµÄÎÄ¼þ×ÜÊý£¬±£´æ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         for (int i = 0; i < classifications.length; i++) {
             int n = calcFileCountOfClassification(i);
             filesOfC[i] = n;
-            files += n; // ¼ÆËãÎÄ¼þ×ÜÊý£¬±£´æ
+            files += n; // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
         
-        // »ñµÃµ¥´Ê±í
+        // ï¿½ï¿½Ãµï¿½ï¿½Ê±ï¿½
         try {
 			extractVocabulary();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 
-		// ¼ÆËã¸÷Àà±ðÏÂµ¥´Ê×ÜÊý£¬µ¥´Ê×ÜÊý
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         try {
 			calculate();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 		
-		// ½«Ô¤´¦ÀíºóµÄÊý¾ÝÐ´Èëµ½´ÅÅÌ
+		// ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ëµ½ï¿½ï¿½ï¿½ï¿½
 		try {
             ObjectOutputStream out = new ObjectOutputStream(
                     new FileOutputStream(modelFile));
@@ -129,8 +129,8 @@ public class IntermediateData implements Serializable {
     
     
     
-    /** »ñµÃµ¥´Ê±í. 
-     * @throws IOException ¶ÁÈ¡ÓïÁÏ¿â³ö´í
+    /** ï¿½ï¿½Ãµï¿½ï¿½Ê±ï¿½. 
+     * @throws IOException ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½
      */
     private void extractVocabulary() throws IOException {
     	for (String c : classifications) {
@@ -140,9 +140,9 @@ public class IntermediateData implements Serializable {
                 String text = getText(file, encoding);
 
                 String[] terms = null;
-                // ÖÐÎÄ·Ö´Ê´¦Àí(·Ö´Êºó½á¹û¿ÉÄÜ»¹°üº¬ÓÐÍ£ÓÃ´Ê£©
+                // ï¿½ï¿½ï¿½Ä·Ö´Ê´ï¿½ï¿½ï¿½(ï¿½Ö´Êºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½Ã´Ê£ï¿½
                 //terms = textSpliter.split(text, " ").split(" ");
-                //terms = ChineseSpliter.dropStopWords(terms); // È¥µôÍ£ÓÃ´Ê£¬ÒÔÃâÓ°Ïì·ÖÀà
+                //terms = ChineseSpliter.dropStopWords(terms); // È¥ï¿½ï¿½Í£ï¿½Ã´Ê£ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½ï¿½ï¿½ï¿½
 
                 terms = Chinese_parser.participle(text);
                 
@@ -155,11 +155,11 @@ public class IntermediateData implements Serializable {
 
     
     /**
-     * ·µ»ØÑµÁ·ÎÄ±¾¼¯ÖÐÔÚ¸ø¶¨·ÖÀàÏÂµÄÑµÁ·ÎÄ±¾ÊýÄ¿.
+     * ï¿½ï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½Ñµï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½Ä¿.
      * 
      * @param c
-     *            ¸ø¶¨µÄ·ÖÀà
-     * @return ÑµÁ·ÎÄ±¾¼¯ÖÐÔÚ¸ø¶¨·ÖÀàÏÂµÄÑµÁ·ÎÄ±¾ÊýÄ¿
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
+     * @return Ñµï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½Ñµï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½Ä¿
      */
     private int calcFileCountOfClassification(
             final int c) {
@@ -170,7 +170,7 @@ public class IntermediateData implements Serializable {
 
     
     /**
-     * ¼ÆËã fileCountOfXC, fileCountOfC, fileCount, tokensOfXC, tokensOfC, tokens.
+     * ï¿½ï¿½ï¿½ï¿½ fileCountOfXC, fileCountOfC, fileCount, tokensOfXC, tokensOfC, tokens.
      * 
      * @throws IOException
      */
@@ -190,13 +190,13 @@ public class IntermediateData implements Serializable {
                 String text = getText(file, encoding);
                 String[] terms = null;
                 
-                // ÖÐÎÄ·Ö´Ê´¦Àí(·Ö´Êºó½á¹û¿ÉÄÜ»¹°üº¬ÓÐÍ£ÓÃ´Ê£©
+                // ï¿½ï¿½ï¿½Ä·Ö´Ê´ï¿½ï¿½ï¿½(ï¿½Ö´Êºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½Ã´Ê£ï¿½
                 //terms = textSpliter.split(text, " ").split(" ");
-                //terms = ChineseSpliter.dropStopWords(terms); // È¥µôÍ£ÓÃ´Ê£¬ÒÔÃâÓ°Ïì·ÖÀà
+                //terms = ChineseSpliter.dropStopWords(terms); // È¥ï¿½ï¿½Í£ï¿½Ã´Ê£ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½ï¿½ï¿½ï¿½
 
                 terms = Chinese_parser.participle(text);
                 
-                for (String term : terms) { // ¼ÆËã±¾Àà±ðÏÂÃ¿¸öµ¥´ÊµÄ³öÏÖ´ÎÊý
+                for (String term : terms) { // ï¿½ï¿½ï¿½ã±¾ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ÊµÄ³ï¿½ï¿½Ö´ï¿½ï¿½ï¿½
                 	Integer value = tmpT.get(term);
                     if(value == null) {
                     	tmpT.put(term, new Integer(1));
@@ -205,8 +205,8 @@ public class IntermediateData implements Serializable {
                     }
                 }
                 
-                // ¿ªÊ¼¼ÆËã filesOfXC[i]
-                for (String term : terms) { //È¥³ýÖØ¸´µ¥´Ê
+                // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ filesOfXC[i]
+                for (String term : terms) { //È¥ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½
                     words.add(term);
                 }
 				for (Iterator<String> iter = words.iterator(); iter.hasNext();) {
@@ -221,7 +221,7 @@ public class IntermediateData implements Serializable {
 				}
             }
 
-            // ¸ÃÀà±ðÏÂËùÓÐµ¥´ÊµÄ³öÏÖ×ÜÊý nC
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ÊµÄ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ nC
             for (Iterator<Entry<String, Integer>> iter = tmpT.entrySet()
                     .iterator(); iter.hasNext();) {
                 Entry<String, Integer> entry = iter.next();
@@ -229,18 +229,18 @@ public class IntermediateData implements Serializable {
                 tokensOfC[i] += entry.getValue().intValue();
             }
             
-            tokens += tokensOfC[i]; // ËùÓÐµ¥´Ê³öÏÖ×ÜÊý
+            tokens += tokensOfC[i]; // ï¿½ï¿½ï¿½Ðµï¿½ï¿½Ê³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
     
     
     /**
-     * ¸ù¾ÝÑµÁ·ÎÄ±¾Àà±ð·µ»ØÕâ¸öÀà±ðÏÂµÄËùÓÐÑµÁ·ÎÄ±¾Â·¾¶(full path).
+     * ï¿½ï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ð·µ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½Ä±ï¿½Â·ï¿½ï¿½(full path).
      * 
-     * @param dirStr ÒÑ·ÖÀàµÄÎÄ±¾¸ùÄ¿Â¼£¬Ä©Î²²»´øÐ±¸Ü
+     * @param dirStr ï¿½Ñ·ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½Ä©Î²ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½
      * @param classification
-     *            ¸ø¶¨µÄ·ÖÀà
-     * @return ¸ø¶¨·ÖÀàÏÂËùÓÐÎÄ¼þµÄÂ·¾¶£¨full path£©
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
+     * @return ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½full pathï¿½ï¿½
      */
     public static String[] getFilesPath(final String dirStr, final String classification) {
         File classDir = new File(dirStr + File.separator
@@ -255,14 +255,14 @@ public class IntermediateData implements Serializable {
 
 
     /**
-     * ·µ»Ø¸ø¶¨Â·¾¶µÄÎÄ±¾ÎÄ¼þÄÚÈÝ.
+     * ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½.
      * 
      * @param filePath
-     *            ¸ø¶¨µÄÎÄ±¾ÎÄ¼þÂ·¾¶
-     * @param encoding ÎÄ±¾ÎÄ¼þµÄ±àÂë
-     * @return ÎÄ±¾ÄÚÈÝ
+     *            ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½Ä¼ï¿½Â·ï¿½ï¿½
+     * @param encoding ï¿½Ä±ï¿½ï¿½Ä¼ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
+     * @return ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½
      * @throws java.io.IOException
-     *             ÎÄ¼þÕÒ²»µ½»òIO³ö´í
+     *             ï¿½Ä¼ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½IOï¿½ï¿½ï¿½ï¿½
      */
     public static String getText(final String filePath, final String encoding)
             throws IOException {
@@ -281,13 +281,13 @@ public class IntermediateData implements Serializable {
         return sb.toString();
     }
     
-    /** ´òÓ¡ÃüÁîÐÐ²ÎÊýµÄ½âÊÍÐÅÏ¢. */
+    /** ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢. */
     private static void usage() {
-        System.err.println("usage:\t  <ÓïÁÏ¿âÄ¿Â¼> <ÓïÁÏ¿âÎÄ±¾±àÂë> <ÖÐ¼äÎÄ¼þ>");
+        System.err.println("usage:\t  <ï¿½ï¿½ï¿½Ï¿ï¿½Ä¿Â¼> <ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½> <ï¿½Ð¼ï¿½ï¿½Ä¼ï¿½>");
     }
     
     /**
-     * Ê¹ÓÃ·½·¨£ºIntermediateData d:\SogouC.mini\Sample\ gbk d:\mini.db
+     * Ê¹ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½IntermediateData d:\SogouC.mini\Sample\ gbk d:\mini.db
      * @param args
      */
     public static void main(String args[]) {
@@ -295,9 +295,9 @@ public class IntermediateData implements Serializable {
     		usage();
     		return;
     	}
-    	System.out.println("ÖÐ¼äÊý¾ÝÉú³ÉÖÐ......");
+    	System.out.println("ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½......");
     	IntermediateData tdm = new IntermediateData();
     	tdm.generate(args[0], args[1], args[2]);
-    	System.out.println("ÖÐ¼äÊý¾ÝÉú³É£¡");
+    	System.out.println("ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½");
     }
 }

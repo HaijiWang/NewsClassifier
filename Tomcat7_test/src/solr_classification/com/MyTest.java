@@ -1,4 +1,4 @@
-package com.yanjiuyanjiu.text.classification;
+package solr_classification.com;
 
 import java.io.IOException;
 
@@ -21,8 +21,8 @@ public class MyTest {
 		server.setMaxRetries(1); // defaults to 0. > 1 not recommended.
 		server.setConnectionTimeout(5000); // 5 seconds to establish TCP
 		
-		//Õý³£Çé¿öÏÂ£¬ÒÔÏÂ²ÎÊýÎÞÐëÉèÖÃ
-		//Ê¹ÓÃÀÏ°æ±¾solrj²Ù×÷ÐÂ°æ±¾µÄsolrÊ±£¬ÒòÎªÁ½¸ö°æ±¾µÄjavabin incompatible,ËùÒÔÐèÒªÉèÖÃParser
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//Ê¹ï¿½ï¿½ï¿½Ï°æ±¾solrjï¿½ï¿½ï¿½ï¿½ï¿½Â°æ±¾ï¿½ï¿½solrÊ±ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½æ±¾ï¿½ï¿½javabin incompatible,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Parser
 		server.setParser(new XMLResponseParser());
 		server.setSoTimeout(1000); // socket read timeout
 		server.setDefaultMaxConnectionsPerHost(100);
@@ -33,27 +33,27 @@ public class MyTest {
 		// Server side must support gzip or deflate for this to have any effect.
 		server.setAllowCompression(true);
 
-		//Ê¹ÓÃModifiableSolrParams´«µÝ²ÎÊý
+		//Ê¹ï¿½ï¿½ModifiableSolrParamsï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½
 //		ModifiableSolrParams params = new ModifiableSolrParams();
 //		// 192.168.230.128:8983/solr/select?q=video&fl=id,name,price&sort=price asc&start=0&rows=2&wt=json
-//		// ÉèÖÃ²ÎÊý£¬ÊµÏÖÉÏÃæURLÖÐµÄ²ÎÊýÅäÖÃ
-//		// ²éÑ¯¹Ø¼ü´Ê
+//		// ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½URLï¿½ÐµÄ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//		// ï¿½ï¿½Ñ¯ï¿½Ø¼ï¿½ï¿½ï¿½
 //		params.set("q", "video");
-//		// ·µ»ØÐÅÏ¢
+//		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 //		params.set("fl", "id,name,price,score");
-//		// ÅÅÐò
+//		// ï¿½ï¿½ï¿½ï¿½
 //		params.set("sort", "price asc");
-//		// ·ÖÒ³,start=0¾ÍÊÇ´Ó0¿ªÊ¼,rows=5µ±Ç°·µ»Ø5Ìõ¼ÇÂ¼,µÚ¶þÒ³¾ÍÊÇ±ä»¯startÕâ¸öÖµÎª5¾Í¿ÉÒÔÁË
+//		// ï¿½ï¿½Ò³,start=0ï¿½ï¿½ï¿½Ç´ï¿½0ï¿½ï¿½Ê¼,rows=5ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½5ï¿½ï¿½ï¿½ï¿½Â¼,ï¿½Ú¶ï¿½Ò³ï¿½ï¿½ï¿½Ç±ä»¯startï¿½ï¿½ï¿½ÖµÎª5ï¿½Í¿ï¿½ï¿½ï¿½ï¿½ï¿½
 //		params.set("start", 2);
 //		params.set("rows", 2);
-//		// ·µ»Ø¸ñÊ½
+//		// ï¿½ï¿½ï¿½Ø¸ï¿½Ê½
 //		params.set("wt", "javabin");
 //		QueryResponse response = server.query(params);
 
-		//Ê¹ÓÃSolrQuery´«µÝ²ÎÊý£¬SolrQueryµÄ·â×°ÐÔ¸üºÃ
+		//Ê¹ï¿½ï¿½SolrQueryï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½SolrQueryï¿½Ä·ï¿½×°ï¿½Ô¸ï¿½ï¿½ï¿½
 		server.setRequestWriter(new BinaryRequestWriter());
 		SolrQuery query = new SolrQuery();
-		query.setQuery("content:Ò½ÁÆ");
+		query.setQuery("content:Ò½ï¿½ï¿½");
 		//query.setFields("id","name","price","score");
 		//query.setSort("price", ORDER.asc);
 		query.setStart(0);
@@ -64,7 +64,7 @@ public class MyTest {
 		
 		
 		
-		// ËÑË÷µÃµ½µÄ½á¹ûÊý
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½
 		System.out.println("Find:" + response.getResults().getNumFound());
 		
 		
@@ -77,7 +77,7 @@ public class MyTest {
 			iRow++;
 		}
 		/*
-		// Êä³ö½á¹û
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		int iRow = 1;
 		for (SolrDocument doc : response.getResults()) {
 			System.out.println("----------" + iRow + "------------");

@@ -1,15 +1,15 @@
-package com.yanjiuyanjiu.text.classification;
+package solr_classification.com;
 
 /**
- * ·ÖÀà½á¹û.
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
  */
 public class ClassifyResult {
-    /** ·ÖÀàµÄ¸ÅÂÊ. */
+    /** ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½. */
     public double probility;
-    /** Àà±ðÃû. */
+    /** ï¿½ï¿½ï¿½ï¿½ï¿½. */
     public String classification;
 
-    /** ¹¹Ôìº¯Êý. */
+    /** ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½. */
     public ClassifyResult() {
         this.probility = 0;
         this.classification = null;

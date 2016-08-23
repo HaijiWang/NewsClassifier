@@ -11,7 +11,8 @@
 	import="org.apache.solr.client.solrj.impl.XMLResponseParser"
 	import="org.apache.solr.client.solrj.response.QueryResponse"
 	import="org.apache.solr.common.SolrDocument"
-	import="solr_classification.com.SolrConnection"
+	import="solr_connect_new.SolrConnection"
+	
 	import="org.apache.lucene.queryParser.QueryParser"
 %>
 
@@ -23,12 +24,12 @@
 <body>
 	<%!private static String id = null; 
 	   private static SolrConnection sConn= new SolrConnection();
-	   
+	   private static QueryResponse solr_response = new QueryResponse();
+	   private static SolrDocument doc = new SolrDocument();
 	%>
 	<%
-
+	sConn.setSolrURL("http://localhost:8983/solr/Test1/");
 	sConn.resetQueryParams();
-	
 	%>
 	
 	
@@ -46,64 +47,84 @@
 			break;
 		};
 	}
-	out.println(request.getQueryString()+"\n");
+	out.println("request string: "+request.getQueryString()+"\n");
 	
+	if (request.getParameter("id")!=null){
+	/*
 	// Test Delete
 	List<String> ids = new ArrayList<String>();
 	ids.add(QueryParser.escape(request.getParameter("id")));
 	sConn.deleteContentById(ids);
-	
+	*/
 	
 	// Update ArtificialTags
+	
 	System.out.println("Debug: Going to update id:"+QueryParser.escape(request.getParameter("id")));
 	Map<String, Object> update_params = new HashMap<String, Object>();
 	Map<String,String> fieldModifier = new HashMap<String,String>();
 	fieldModifier.put("set",oneClass); 
 	update_params.put("artificialTags",fieldModifier);
-	update_params.put("id",QueryParser.escape(request.getParameter("id")));
+	update_params.put("id",request.getParameter("id"));
+	// Somehow it does not have to be parsed, what can I say !!!!!
+	//update_params.put("id",QueryParser.escape(request.getParameter("id"))); 
 	
-	//sConn.updateContent(update_params);
+	sConn.updateContent(update_params);
 	
-	/*
+	
 	// Verify the previous update is successful
-	sConn.resetQueryParams();
-	sConn.setQueryParams("q", "id:" + QueryParser.escape(request.getParameter("id")));
-	sConn.setQueryParams("start", "0");
-	sConn.setQueryParams("rows", "1");	
+	//sConn.resetQueryParams();
+	HashMap<String,String>  params  = new HashMap<String,String>();
+	params.put("q", "id:" + QueryParser.escape(request.getParameter("id")));
+	params.put("start","0");
+	params.put("rows","1");
+	sConn.setQueryParams(params);
+	
+	//sConn.setQueryParams("q", "id:" + QueryParser.escape(request.getParameter("id")));
+	//sConn.setQueryParams("start", "0");
+	//sConn.setQueryParams("rows", "1");	
 	
 	try {
-		//solr_response_1 = sConn.getContent();	
+		solr_response = sConn.getContent();	
+		//System.out.println("Degbug: solr_response: "+solr_response.toString());
 	} catch(Exception e){
 		System.out.println(e);
 	}
-	SolrDocument doc_1 = solr_response_1.getResults().get(0);
-	id = doc_1.getFieldValue("id").toString();
-	System.out.println("Again got : id" + id);
-	System.out.println("ArtificialTags: " + doc_1.getFieldValue("artificialTags").toString());
-	*/
+	doc = solr_response.getResults().get(0);
+	id = doc.getFieldValue("id").toString();
+	System.out.println("Again got : id: " + id);
+	System.out.println("Again got : content:" + doc.getFieldValue("content").toString());
+	System.out.println("ArtificialTags: " + doc.getFieldValue("artificialTags").toString());
+	}
 	%>
 
 	<%
 	
-		QueryResponse solr_response = new QueryResponse();
+		//QueryResponse solr_response = new QueryResponse();
 		
 		//sConn.setSolrURL("http://172.24.60.110:8983/solr/test");
 		//sConn.setSolrURL("http://localhost:8983/solr/Test1/");
 		//sConn.setQueryParams("q","content:急诊 AND content:门诊 AND content:住院 AND content: 质量 AND content:服务 AND content:整形");
 		//sConn.resetQueryParams();
 		Random rn = new Random();
-		int startNum = rn.nextInt(5000);
+		int startNum = rn.nextInt(10);
 		
 		System.out.println("random number: "+startNum);
-		sConn.setQueryParams("start", String.valueOf(startNum));
-		sConn.setQueryParams("rows", "1");	
+		sConn.resetQueryParams();
+		
+		HashMap<String,String>  params  = new HashMap<String,String>();
+		params.put("start", String.valueOf(startNum));
+		params.put("rows","1");
+		sConn.setQueryParams(params);
+		//sConn.setQueryParams("start", String.valueOf(startNum));
+		//sConn.setQueryParams("rows", "1");	
 		try {
-			solr_response = sConn.getContent();	
+			solr_response = sConn.getContent();
+			//System.out.println("Degbug: solr_response_2: "+solr_response.toString());
 		} catch(Exception e){
-			//System.out.println(e);
+			System.out.println(e);
 		}
 		
-		SolrDocument doc = solr_response.getResults().get(0);
+		doc = solr_response.getResults().get(0);
 		id = doc.getFieldValue("id").toString();
 		System.out.println("id : " + id);
 		System.out.println("content: " + doc.getFieldValue("content").toString());
@@ -123,9 +144,14 @@
 		out.println();
 			
 		if (doc.getFieldValue("machineTags") != null) {
-			out.println("Machine class:" + doc.getFieldValue("machineTags"));
+			out.println("<p>Machine class:" + doc.getFieldValue("machineTags")+"</p>");
 		} else {
-			out.println("Machine class: null");
+			out.println("<p>Machine class: null</p>");
+		}
+		if (doc.getFieldValue("artificialTags") != null) {
+			out.println("<p>artificial class:" + doc.getFieldValue("artificialTags")+"</p>");
+		} else {
+			out.println("<p>artificial class: null</p>");
 		}
 	%>
 
