@@ -1,0 +1,5 @@
+package solr_connect.com;
+
+public class SolrConnection {
+
+}

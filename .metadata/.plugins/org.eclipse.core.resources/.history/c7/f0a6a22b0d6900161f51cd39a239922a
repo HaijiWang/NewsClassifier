@@ -1,0 +1,136 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<%@ page import="java.io.IOException" import="java.util.*"
+	import="org.apache.solr.client.solrj.SolrQuery"
+	import="org.apache.solr.client.solrj.SolrQuery.ORDER"
+	import="org.apache.solr.client.solrj.SolrServerException"
+	import="org.apache.solr.client.solrj.impl.BinaryRequestWriter"
+	import="org.apache.solr.client.solrj.impl.HttpSolrServer"
+	import="org.apache.solr.client.solrj.impl.XMLResponseParser"
+	import="org.apache.solr.client.solrj.response.QueryResponse"
+	import="org.apache.solr.common.SolrDocument"
+	import="solr_connection.SolrConnection"
+	
+%>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>News Classifier</title>
+</head>
+<body>
+	<%!private static String id = null; 
+	   private static SolrConnection sConn= new SolrConnection();
+	   private static QueryResponse solr_response = new QueryResponse();
+	   private static SolrDocument doc = new SolrDocument();
+	%>
+	<%
+	//sConn.setSolrURL("http://localhost:8983/solr/Test1/");
+	//sConn.setSolrURL("http://172.24.60.110:8983/solr/test");
+	//sConn.resetQueryParams();
+	%>
+	
+	
+	
+	<%
+	// Print query path page
+	out.println("request string: "+request.getQueryString()+"\n");
+	
+	// Find classification name and set ArtificialTags
+	ArrayList<String> classes = sConn.getClasses();
+	
+	String class_name = request.getParameter("className");
+	id = request.getParameter("id");
+	
+	if (id!=null && classes.contains(class_name)){
+	 	System.out.println("Going to Tag as:"+ class_name);
+		
+		// Update ArtificialTags
+		sConn.setFieldById(id,"artificialTags",class_name);
+	
+		// Verify the previous update is successful
+		ArrayList<String> fieldNames = new ArrayList<String>();
+		fieldNames.add("content");
+		fieldNames.add("artificialTags");
+		doc = sConn.getFieldById(id, fieldNames);
+		id = doc.getFieldValue("id").toString();
+		System.out.println("Again got : id: " + id);
+		System.out.println("Again got : content:" + doc.getFieldValue("content").toString());
+		//System.out.println("ArtificialTags: " + doc.getFieldValue("artificialTags").toString());
+	}
+	%>
+
+	<%
+		
+		//sConn.setSolrURL("http://localhost:8983/solr/Test1/");
+		Random rn = new Random();
+		int startNum = rn.nextInt(10);
+		
+		System.out.println("random number: "+startNum);
+		sConn.resetQueryParams();
+		
+		HashMap<String,String>  params  = new HashMap<String,String>();
+		params.put("start", String.valueOf(startNum));
+		params.put("rows","1");
+		sConn.setQueryParams(params);
+		try {
+			solr_response = sConn.getContent();
+		} catch(Exception e){
+			System.out.println(e);
+		}
+		
+		doc = null;
+		doc = solr_response.getResults().get(0);
+		id = doc.getFieldValue("id").toString();
+		System.out.println("id : " + id);
+		System.out.println("content: " + doc.getFieldValue("content").toString());
+		
+		out.println("<table border=2>");
+		out.println("<tr><th>");
+		out.println("id: ");
+		out.println("</th><th>");
+		out.println("content");
+		out.println("</th></tr>");
+		out.println("<tr><td>");
+		out.println(id);
+		out.println("</td><td>");
+		out.println(doc.getFieldValue("content").toString());
+		out.println("</td></tr>");
+		out.println("</table>");
+		out.println();
+			
+		if (doc.getFieldValue("machineTags") != null) {
+			out.println("<p>Machine class:" + doc.getFieldValue("machineTags")+"</p>");
+		} else {
+			out.println("<p>Machine class: null</p>");
+		}
+		if (doc.getFieldValue("artificialTags") != null) {
+			out.println("<p>artificial class:" + doc.getFieldValue("artificialTags")+"</p>");
+		} else {
+			out.println("<p>artificial class: null</p>");
+		}
+	%>
+
+	<form action="test.jsp" name="classification" method="GET" target="_blank" >
+	<% 
+	out.println("<input type = \"hidden\" name = \"id\" value = \"" + id + "\" />");
+	%>
+	<input type="radio" value = "medical" name="className" /> medical
+	<input type="radio" value = "non_medical" name="className" /> non_medical
+	
+	<input type="submit" value="submit"/>
+	
+	
+	</form>
+
+
+
+
+
+
+
+
+</body>
+</html>
